@@ -1,0 +1,50 @@
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import styled from 'styled-components';
+import { Drive } from 'components/Drive';
+import { getAllDriveItems } from 'gapi/google-api';
+import { DriveType } from 'components/Drive/types';
+
+const Home: NextPage<DriveType & { error: string }> = ({
+  driveItems,
+  error,
+}) => {
+  return (
+    <>
+      <Head>
+        <title>Admin Panel</title>
+        <meta name='description' content='andrew-dev-blod admin panel' />
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
+
+      <Wrapper>{!!error ? error : <Drive driveItems={driveItems} />}</Wrapper>
+    </>
+  );
+};
+
+export default Home;
+
+const Wrapper = styled.main`
+  width: 100%;
+  height: 100%;
+  padding: 4rem;
+  background: ${(props) => props.theme.palette.background};
+`;
+
+export async function getServerSideProps() {
+  try {
+    const result = await getAllDriveItems();
+    return {
+      props: {
+        driveItems: result.response,
+        error: result.error,
+      },
+    };
+  } catch (e: any) {
+    return {
+      props: {
+        error: e + '',
+      },
+    };
+  }
+}
