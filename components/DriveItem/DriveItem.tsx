@@ -2,7 +2,7 @@ import React, { FC, MouseEvent, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { DriveItemType } from './types';
+import { DriveItemType } from 'blog-app-shared';
 import {
   ContentInput,
   Label,
@@ -78,6 +78,7 @@ export const DriveItem: FC<DriveItemType> = ({ id, name, path, content }) => {
           name='name'
           type='input'
           placeholder='Name'
+          spellCheck='false'
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.name}
@@ -92,6 +93,7 @@ export const DriveItem: FC<DriveItemType> = ({ id, name, path, content }) => {
           name='path'
           type='input'
           placeholder='Path'
+          spellCheck='false'
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.path}
@@ -105,6 +107,7 @@ export const DriveItem: FC<DriveItemType> = ({ id, name, path, content }) => {
         <ContentInput
           name='content'
           placeholder='Content'
+          spellCheck='false'
           onChange={formik.handleChange}
           onKeyDown={onContentKeyDown}
           ref={contentRef}

@@ -2,13 +2,10 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { Drive } from 'components/Drive';
-import { getAllDriveItems } from 'gapi/google-api';
 import { DriveType } from 'components/Drive/types';
+import { getAllDriveItems } from 'blog-app-shared/src/gapi/requests/getAllDriveItems';
 
-const Home: NextPage<DriveType & { error: string }> = ({
-  driveItems,
-  error,
-}) => {
+const Home: NextPage<DriveType & { error: string }> = ({ driveItems, error }) => {
   return (
     <>
       <Head>
@@ -33,11 +30,11 @@ const Wrapper = styled.main`
 
 export async function getServerSideProps() {
   try {
-    const result = await getAllDriveItems();
+    const response = await getAllDriveItems();
     return {
       props: {
-        driveItems: result.response,
-        error: result.error,
+        driveItems: response.data,
+        error: response.error,
       },
     };
   } catch (e: any) {

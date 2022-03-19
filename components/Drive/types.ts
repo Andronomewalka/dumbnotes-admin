@@ -1,4 +1,4 @@
-import { DriveItemBaseType } from 'components/DriveItem';
+import { DriveItemBaseType } from 'blog-app-shared';
 
 export interface DriveLiType extends DriveItemBaseType {
   isCreate?: boolean;

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { updateDriveItem } from 'gapi/google-api';
+import { updateDriveItem } from 'blog-app-shared';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const body = JSON.parse(req.body);

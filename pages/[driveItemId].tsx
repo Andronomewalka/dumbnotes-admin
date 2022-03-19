@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
-import { getDriveItem } from 'gapi/google-api';
-import { DriveItem, DriveItemType } from 'components/DriveItem';
+import { DriveItem } from 'components/DriveItem';
+import { DriveItemType, getDriveItem } from 'blog-app-shared';
 
 const DriveItemId: NextPage<DriveItemType & { error: string }> = ({
   id,
@@ -39,7 +39,6 @@ const Wrapper = styled.main`
 `;
 
 export async function getServerSideProps(context: any) {
-  console.log('context', context);
   try {
     if (context.query.driveItemId === 'new') {
       return {
@@ -56,7 +55,7 @@ export async function getServerSideProps(context: any) {
     const result = await getDriveItem(context.query.driveItemId);
     return {
       props: {
-        ...result.response,
+        ...result.data,
         error: result.error,
       },
     };

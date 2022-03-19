@@ -1,5 +1,5 @@
+import { DriveItemBaseType } from 'blog-app-shared/src/gapi';
 import { InfoStatus, useInfoContext } from 'components/InfoStack';
-import { DriveItemBaseType } from 'components/DriveItem';
 
 export const useRemoveDriveItem = () => {
   const { pushInfo } = useInfoContext();
@@ -8,13 +8,15 @@ export const useRemoveDriveItem = () => {
       text: `Removing ${driveItem.name}`,
       status: InfoStatus.Pending,
     });
-    const result = await fetch('http://localhost:4001/api/removeDriveItem', {
+    const response = await fetch('http://localhost:4001/api/removeDriveItem', {
       method: 'POST',
       body: JSON.stringify({ driveId: driveItem.id }),
     });
-    if (result.ok) {
-      const resultJson = await result.json();
-      if (!resultJson.error) {
+    if (response.ok) {
+      const responseJson = await response.json();
+      const isOk: boolean = responseJson.data;
+
+      if (isOk) {
         onSuccess();
         pushInfo({
           text: `Removed ${driveItem.name}`,
@@ -22,14 +24,14 @@ export const useRemoveDriveItem = () => {
         });
       } else {
         pushInfo({
-          text: resultJson.error,
+          text: responseJson.error,
           status: InfoStatus.Bad,
         });
         return;
       }
     } else {
       pushInfo({
-        text: result.statusText,
+        text: response.statusText,
         status: InfoStatus.Bad,
       });
     }
