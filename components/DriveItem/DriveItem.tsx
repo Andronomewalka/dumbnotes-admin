@@ -36,7 +36,7 @@ export const DriveItem: FC<DriveItemType> = ({ id, name, path, content }) => {
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
       (async () => {
-        updateDriveItem({ id, ...values }, id === 'new');
+        await updateDriveItem({ id, ...values }, id === 'new');
         setSubmitting(false);
       })();
     },
@@ -58,6 +58,7 @@ export const DriveItem: FC<DriveItemType> = ({ id, name, path, content }) => {
       textarea.value =
         textarea.value.substring(0, start) + '\t' + textarea.value.substring(end);
       textarea.selectionStart = textarea.selectionEnd = start + 1;
+      formik.setFieldValue('content', textarea.value);
     }
   };
 
