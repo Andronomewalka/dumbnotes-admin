@@ -1,11 +1,13 @@
-import type { NextPage } from 'next';
+import type { InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
-import { Drive } from 'components/Drive';
-import { DriveType } from 'components/Drive/types';
-import { getAllDriveItems } from 'blog-app-shared/src/gapi/requests/getAllDriveItems';
+import { getPosts } from 'blog-app-shared';
+import { PostsList } from 'components/PostsList';
 
-const Home: NextPage<DriveType & { error: string }> = ({ driveItems, error }) => {
+const Home: NextPage<InferGetStaticPropsType<typeof getServerSideProps>> = ({
+  posts,
+  error,
+}) => {
   return (
     <>
       <Head>
@@ -14,7 +16,7 @@ const Home: NextPage<DriveType & { error: string }> = ({ driveItems, error }) =>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Wrapper>{!!error ? error : <Drive driveItems={driveItems} />}</Wrapper>
+      <Wrapper>{!!error ? error : <PostsList posts={posts} />}</Wrapper>
     </>
   );
 };
@@ -31,16 +33,17 @@ const Wrapper = styled.main`
 
 export async function getServerSideProps() {
   try {
-    const response = await getAllDriveItems();
+    const response = await getPosts();
     return {
       props: {
-        driveItems: response.data,
+        posts: response.data,
         error: response.error,
       },
     };
   } catch (e: any) {
     return {
       props: {
+        posts: [],
         error: e + '',
       },
     };

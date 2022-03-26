@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const DriveUlWrapper = styled.ul`
+export const PostUlWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -9,7 +9,7 @@ export const DriveUlWrapper = styled.ul`
   list-style: none;
 `;
 
-export const DriveLiWrapper = styled.li<{ isCreate: boolean }>`
+export const PostLiWrapper = styled.li<{ isCreate: boolean }>`
   position: relative;
   display: flex;
   justify-content: center;
@@ -30,7 +30,7 @@ export const DriveLiWrapper = styled.li<{ isCreate: boolean }>`
   }
 `;
 
-export const DriveLiA = styled.a`
+export const PostLiA = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +38,7 @@ export const DriveLiA = styled.a`
   height: 100%;
 `;
 
-export const DriveLiRemoveButton = styled.button`
+export const PostLiDeleteButton = styled.button`
   position: absolute;
   top: 10px;
   right: 10px;
@@ -56,7 +56,7 @@ export const DriveLiRemoveButton = styled.button`
   }
 `;
 
-export const RemoveModalWrapper = styled.div`
+export const DeleteModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,7 +64,7 @@ export const RemoveModalWrapper = styled.div`
   min-width: 300px;
 `;
 
-export const RemoveButtonModal = styled.button`
+export const DeleteButtonModal = styled.button`
   width: 100px;
   height: 32px;
   background-color: rgb(248 113 113);

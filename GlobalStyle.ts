@@ -7,6 +7,7 @@ export const theme: DefaultTheme = {
     backgroundHover: '#DDDFF4',
     foreground: '#353638',
     darkGray: '#292929',
+    semiGray: '#29292980',
     lightGray: '#FCFCFC',
     whiteSemiTransparent: '#D3D3D3',
     lightSplitter: '#D3D3D3',

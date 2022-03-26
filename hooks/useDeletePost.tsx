@@ -1,28 +1,25 @@
-import { DriveItemBaseType } from 'blog-app-shared/src/gapi';
+import { PostBaseType } from 'blog-app-shared';
 import { InfoStatus, useInfoContext } from 'components/InfoStack';
 
-export const useRemoveDriveItem = () => {
+export const useDeletePost = () => {
   const { pushInfo } = useInfoContext();
-  return async (driveItem: DriveItemBaseType, onSuccess: () => void) => {
+  return async (postItem: PostBaseType, onSuccess: () => void) => {
     pushInfo({
-      text: `Removing ${driveItem.name}`,
+      text: `Deleting ${postItem.name}`,
       status: InfoStatus.Pending,
     });
-    const response = await fetch('http://localhost:4001/api/removeDriveItem', {
+    const response = await fetch('http://localhost:4001/api/deletePost', {
       method: 'POST',
-      body: JSON.stringify({ driveId: driveItem.id }),
+      body: JSON.stringify({ postId: postItem.id }),
     });
     if (response.ok) {
       const responseJson = await response.json();
       const isOk: boolean = responseJson.data;
 
       if (isOk) {
-        fetch('http://localhost:3000/api/updateDrivePathes', {
-          method: 'POST',
-        });
         onSuccess();
         pushInfo({
-          text: `Removed ${driveItem.name}`,
+          text: `Deleted ${postItem.name}`,
           status: InfoStatus.Good,
         });
       } else {

@@ -1,4 +1,5 @@
 import 'styled-components';
+
 interface IPalette {
   main: string;
   contrastText: string;
@@ -11,6 +12,7 @@ declare module 'styled-components' {
       backgroundHover: string;
       foreground: string;
       darkGray: string;
+      semiGray: string;
       lightGray: string;
       whiteSemiTransparent: string;
       lightSplitter: string;

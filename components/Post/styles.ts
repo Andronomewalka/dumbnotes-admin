@@ -6,17 +6,31 @@ export const Wrapper = styled.div`
 `;
 
 export const Form = styled.form`
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
+`;
 
-  > label:nth-child(4) {
-    flex: 1 0;
-  }
+export const PostId = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 10pt;
+  color: ${(props) => props.theme.palette.semiGray};
+`;
+
+const LabelBase = css`
+  margin-bottom: 16px;
 `;
 
 export const Label = styled.label`
-  margin-bottom: 16px;
+  ${LabelBase};
+`;
+
+export const ContentLabel = styled.label`
+  ${LabelBase};
+  flex: 1 0;
 `;
 
 const BaseInputStyle = css`

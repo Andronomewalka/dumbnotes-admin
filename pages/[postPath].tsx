@@ -1,30 +1,21 @@
-import type { NextPage } from 'next';
+import type { InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
-import { DriveItem } from 'components/DriveItem';
-import { DriveItemType, getDriveItem } from 'blog-app-shared';
+import { defaultPost, getPost } from 'blog-app-shared';
+import { Post } from 'components/Post';
 
-const DriveItemId: NextPage<DriveItemType & { error: string }> = ({
-  id,
-  name,
-  path,
-  content,
+const DriveItemId: NextPage<InferGetStaticPropsType<typeof getServerSideProps>> = ({
+  data,
   error,
 }) => {
   return (
     <>
       <Head>
-        <title>{name}</title>
+        <title>{data.name}</title>
         <meta name='description' content='andrew-dev-blod admin panel' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Wrapper>
-        {!!error ? (
-          error
-        ) : (
-          <DriveItem id={id} name={name} path={path} content={content} />
-        )}
-      </Wrapper>
+      <Wrapper>{!!error ? error : <Post {...data} />}</Wrapper>
     </>
   );
 };
@@ -41,28 +32,31 @@ const Wrapper = styled.main`
 
 export async function getServerSideProps(context: any) {
   try {
-    if (context.query.driveItemId === 'new') {
+    if (context.query.postPath === 'new') {
       return {
         props: {
-          id: 'new',
-          name: '',
-          path: '',
-          content: '',
+          data: {
+            id: '',
+            name: '',
+            path: 'new',
+            content: '',
+          },
           error: '',
         },
       };
     }
 
-    const result = await getDriveItem(context.query.driveItemId);
+    const result = await getPost(context.query.postPath);
     return {
       props: {
-        ...result.data,
+        data: result.data,
         error: result.error,
       },
     };
   } catch (e: any) {
     return {
       props: {
+        data: defaultPost,
         error: e + '',
       },
     };

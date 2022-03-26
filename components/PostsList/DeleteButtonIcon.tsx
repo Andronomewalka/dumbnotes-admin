@@ -1,4 +1,4 @@
-export const RemoveButtonIcon = () => (
+export const DeleteButtonIcon = () => (
   <svg
     version='1.1'
     id='Capa_1'
