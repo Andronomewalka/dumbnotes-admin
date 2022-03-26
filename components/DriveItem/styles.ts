@@ -58,17 +58,20 @@ export const ValidationError = styled.div`
   }
 `;
 
-export const SubmitButton = styled.input<{ isRequesting: boolean }>`
+export const SubmitButton = styled.input`
   align-self: start;
   margin-top: 16px;
   width: 100px;
   height: 32px;
-  background: ${(props) =>
-    props.isRequesting ? props.theme.palette.lightGray : '#00b0fc'};
+  background: ${(props) => props.theme.palette.lightGray};
   color: white;
   border-radius: ${(props) => props.theme.borderRadius};
   border-color: transparent;
   transition: all 0.3s ease;
+
+  :enabled {
+    background: #00b0fc;
+  }
 
   :hover:enabled {
     background: #019ef3;

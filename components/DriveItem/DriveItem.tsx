@@ -117,8 +117,7 @@ export const DriveItem: FC<DriveItemType> = ({ id, name, path, content }) => {
       </Label>
       <SubmitButton
         type='submit'
-        disabled={formik.isSubmitting}
-        isRequesting={formik.isSubmitting}
+        disabled={formik.isSubmitting || !formik.isValid}
         value='Save'
       />
     </Form>

@@ -17,6 +17,9 @@ export const useRemoveDriveItem = () => {
       const isOk: boolean = responseJson.data;
 
       if (isOk) {
+        fetch('http://localhost:3000/api/updateDrivePathes', {
+          method: 'POST',
+        });
         onSuccess();
         pushInfo({
           text: `Removed ${driveItem.name}`,

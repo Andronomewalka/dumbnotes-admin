@@ -36,6 +36,7 @@ const Wrapper = styled.main`
   height: 100%;
   padding: 1.5rem 2rem;
   background: ${(props) => props.theme.palette.background};
+  overflow: auto;
 `;
 
 export async function getServerSideProps(context: any) {

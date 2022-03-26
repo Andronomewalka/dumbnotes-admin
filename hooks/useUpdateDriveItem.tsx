@@ -17,6 +17,12 @@ export const useUpdateDriveItem = () => {
     });
 
     if (response.ok) {
+      if (isCreation) {
+        fetch('http://localhost:3000/api/updateDrivePathes', {
+          method: 'POST',
+        });
+      }
+
       const responseJson = await response.json();
       const newItemId = responseJson.data;
 
