@@ -1,25 +1,24 @@
-import { PostBaseType } from 'blog-app-shared';
 import { InfoStatus, useInfoContext } from 'components/InfoStack';
 
-export const useDeletePost = () => {
+export const useUpdateNavItems = () => {
   const { pushInfo } = useInfoContext();
-  return async (postItem: PostBaseType, onSuccess: () => void) => {
+  return async (navItemsContent: string) => {
     pushInfo({
-      text: `Deleting ${postItem.name}`,
+      text: 'Updating navigation',
       status: InfoStatus.Pending,
     });
-    const response = await fetch('http://localhost:4001/api/deletePost', {
-      method: 'DELETE',
-      body: JSON.stringify({ postId: postItem.id }),
+
+    const response = await fetch('http://localhost:4001/api/updateNavItems', {
+      method: 'PUT',
+      body: JSON.stringify({ navItemsContent }),
     });
+
     if (response.ok) {
       const responseJson = await response.json();
-      const isOk: boolean = responseJson.data;
 
-      if (isOk) {
-        onSuccess();
+      if (!responseJson.error) {
         pushInfo({
-          text: `Deleted ${postItem.name}`,
+          text: 'Updated navitgation',
           status: InfoStatus.Good,
         });
       } else {
@@ -27,7 +26,6 @@ export const useDeletePost = () => {
           text: responseJson.error,
           status: InfoStatus.Bad,
         });
-        return;
       }
     } else {
       pushInfo({

@@ -16,6 +16,11 @@ declare module 'styled-components' {
       lightGray: string;
       whiteSemiTransparent: string;
       lightSplitter: string;
+      error: string;
+      primary: string;
+    };
+    shadow: {
+      focus: string;
     };
   }
 }

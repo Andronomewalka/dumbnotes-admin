@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const body = JSON.parse(req.body);
   if (!body?.postId) {
     return res.status(400).json({});
-  } else if (req.method === 'POST') {
+  } else if (req.method === 'DELETE') {
     const result = await deletePost(body.postId);
     res.status(200).json(result);
   } else {

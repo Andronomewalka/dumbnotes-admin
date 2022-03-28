@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { BaseCardCss } from 'shared/SharedStyled';
 
 export const PostUlWrapper = styled.ul`
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   gap: 20px;
   padding: 0;
@@ -10,24 +11,10 @@ export const PostUlWrapper = styled.ul`
 `;
 
 export const PostLiWrapper = styled.li<{ isCreate: boolean }>`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 180px;
-  height: 230px;
-  background: white;
-  border-radius: ${(props) => props.theme.borderRadius};
+  ${BaseCardCss};
   border-style: ${(props) => (props.isCreate ? 'dashed' : 'none')};
   border-color: ${(props) =>
     props.isCreate ? props.theme.palette.whiteSemiTransparent : 'unset'};
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  :hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 10px 38px -22px rgba(0, 0, 0, 0.17);
-  }
 `;
 
 export const PostLiA = styled.a`

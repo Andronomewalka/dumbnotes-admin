@@ -36,7 +36,7 @@ export const useCreatePost = () => {
           status: InfoStatus.Bad,
         });
       }
-      return responseJson as string;
+      return responseJson.data;
     }
 
     pushInfo({

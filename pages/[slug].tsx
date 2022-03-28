@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { defaultPost, getPost } from 'blog-app-shared';
 import { Post } from 'components/Post';
 
-const DriveItemId: NextPage<InferGetStaticPropsType<typeof getServerSideProps>> = ({
+const PostSlug: NextPage<InferGetStaticPropsType<typeof getServerSideProps>> = ({
   data,
   error,
 }) => {
@@ -20,7 +20,7 @@ const DriveItemId: NextPage<InferGetStaticPropsType<typeof getServerSideProps>> 
   );
 };
 
-export default DriveItemId;
+export default PostSlug;
 
 const Wrapper = styled.main`
   width: 100%;
@@ -46,7 +46,7 @@ export async function getServerSideProps(context: any) {
       };
     }
 
-    const result = await getPost(context.query.postPath);
+    const result = await getPost(context.query.slug);
     return {
       props: {
         data: result.data,

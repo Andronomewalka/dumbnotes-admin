@@ -3,20 +3,11 @@ import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { PostType } from 'blog-app-shared';
-import {
-  ContentInput,
-  Label,
-  ContentLabel,
-  Form,
-  PostId,
-  SubmitButton,
-  BackButton,
-  ValidationError,
-  SingleInput,
-} from './styles';
+import { BackButtonIcon } from 'shared';
+import { ContentInput, ContentLabel, PostId, SingleInput } from './styles';
 import { useUpdatePost } from 'hooks/useUpdatePost';
-import { BackButtonIcon } from './BackButtonIcon';
 import { useCreatePost } from 'hooks/useCreatePost';
+import { BackButton, Form, Label, SubmitButton, ValidationError } from 'shared';
 
 export const Post: FC<PostType> = ({ id, name, path, content }) => {
   const router = useRouter();
@@ -84,9 +75,8 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
         Back
       </BackButton>
       <PostId>{postId}</PostId>
-      <PostId>{postId}</PostId>
       <Label>
-        Item name
+        Post name
         <SingleInput
           name='name'
           type='input'
@@ -101,7 +91,7 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
         </ValidationError>
       </Label>
       <Label>
-        Item path
+        Post path
         <SingleInput
           name='path'
           type='input'
@@ -116,7 +106,7 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
         </ValidationError>
       </Label>
       <ContentLabel>
-        Item content
+        Post content
         <ContentInput
           name='content'
           placeholder='Content'
