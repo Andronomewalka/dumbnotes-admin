@@ -3,17 +3,24 @@ import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { PostType } from 'blog-app-shared';
-import { BackButtonIcon } from 'shared';
-import { ContentInput, ContentLabel, PostId, SingleInput } from './styles';
+import {
+  BackButton,
+  BackButtonIcon,
+  Form,
+  Label,
+  SubmitButton,
+  ValidationError,
+} from 'shared';
 import { useUpdatePost } from 'hooks/useUpdatePost';
 import { useCreatePost } from 'hooks/useCreatePost';
-import { BackButton, Form, Label, SubmitButton, ValidationError } from 'shared';
+import { ContentInput, ContentLabel, PostId, SingleInput } from './styles';
 
 export const Post: FC<PostType> = ({ id, name, path, content }) => {
   const router = useRouter();
   const [postId, setPostId] = useState(id);
   const updatePost = useUpdatePost();
   const createPost = useCreatePost();
+  const oldPath = useRef(path);
 
   const validationScema = Yup.object().shape({
     name: Yup.string().required('required'),
@@ -34,9 +41,16 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
       (async () => {
         if (router.asPath === '/new') {
           const newPostId = await createPost({ ...values });
-          setPostId(newPostId);
+          if (newPostId) {
+            setPostId(newPostId);
+            router.push(`${values.path}`, undefined, { shallow: true });
+          }
         } else {
-          await updatePost({ id, ...values });
+          const res = await updatePost(oldPath.current, { id, ...values });
+          if (res) {
+            oldPath.current = values.path;
+            router.push(`${values.path}`, undefined, { shallow: true });
+          }
         }
         setSubmitting(false);
       })();

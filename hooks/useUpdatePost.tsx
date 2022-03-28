@@ -3,7 +3,7 @@ import { InfoStatus, useInfoContext } from 'components/InfoStack';
 
 export const useUpdatePost = () => {
   const { pushInfo } = useInfoContext();
-  return async (postItem: PostType) => {
+  return async (postOldPath: string, postItem: PostType): Promise<boolean> => {
     pushInfo({
       text: `Updating ${postItem.name}`,
       status: InfoStatus.Pending,
@@ -17,9 +17,10 @@ export const useUpdatePost = () => {
     if (response.ok) {
       const responseJson = await response.json();
 
-      if (responseJson.data !== 'pathChanged') {
+      if (!responseJson.error) {
+        // need to revalidate changed item (on its before changed path)
         const revalidateResponse = await fetch(
-          `http://localhost:3000/api/revalidate?secret=${process.env.NEXT_PUBLIC_REVALIDATE_TOKEN}&post=${postItem.path}`
+          `http://localhost:3000/api/revalidate?secret=${process.env.NEXT_PUBLIC_REVALIDATE_TOKEN}&post=${postOldPath}`
         );
         if (revalidateResponse.ok) {
           const revalidateResponseJson = await revalidateResponse.json();
@@ -28,22 +29,21 @@ export const useUpdatePost = () => {
               text: `Updated ${postItem.name}, but revalidation failed with "${revalidateResponseJson.message}"`,
               status: InfoStatus.Pending,
             });
-            return;
+            return false;
           }
         } else {
           pushInfo({
             text: `Updated ${postItem.name}, but revalidation failed with "${revalidateResponse.statusText}"`,
             status: InfoStatus.Pending,
           });
-          return;
+          return false;
         }
-      }
 
-      if (!responseJson.error) {
         pushInfo({
           text: `Updated ${postItem.name}`,
           status: InfoStatus.Good,
         });
+        return true;
       } else {
         pushInfo({
           text: responseJson.error,
@@ -56,5 +56,6 @@ export const useUpdatePost = () => {
         status: InfoStatus.Bad,
       });
     }
+    return false;
   };
 };
