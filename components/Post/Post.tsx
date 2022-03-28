@@ -43,10 +43,11 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
           const newPostId = await createPost({ ...values });
           if (newPostId) {
             setPostId(newPostId);
+            oldPath.current = values.path;
             router.push(`${values.path}`, undefined, { shallow: true });
           }
         } else {
-          const res = await updatePost(oldPath.current, { id, ...values });
+          const res = await updatePost(oldPath.current, { id: postId, ...values });
           if (res) {
             oldPath.current = values.path;
             router.push(`${values.path}`, undefined, { shallow: true });

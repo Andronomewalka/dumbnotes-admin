@@ -8,28 +8,35 @@ export const useUpdateNavItems = () => {
       status: InfoStatus.Pending,
     });
 
-    const response = await fetch('http://localhost:4001/api/updateNavItems', {
-      method: 'PUT',
-      body: JSON.stringify({ navItemsContent }),
-    });
+    try {
+      const response = await fetch('http://localhost:4001/api/updateNavItems', {
+        method: 'PUT',
+        body: JSON.stringify({ navItemsContent }),
+      });
 
-    if (response.ok) {
-      const responseJson = await response.json();
+      if (response.ok) {
+        const responseJson = await response.json();
 
-      if (!responseJson.error) {
-        pushInfo({
-          text: 'Updated navitgation',
-          status: InfoStatus.Good,
-        });
+        if (!responseJson.error) {
+          pushInfo({
+            text: 'Updated navitgation',
+            status: InfoStatus.Good,
+          });
+        } else {
+          pushInfo({
+            text: responseJson.error,
+            status: InfoStatus.Bad,
+          });
+        }
       } else {
         pushInfo({
-          text: responseJson.error,
+          text: response.statusText,
           status: InfoStatus.Bad,
         });
       }
-    } else {
+    } catch (e: any) {
       pushInfo({
-        text: response.statusText,
+        text: e + '',
         status: InfoStatus.Bad,
       });
     }
