@@ -3,17 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4001",
+    "dev": "next dev --hostname 127.0.0.1 -p 4001",
     "build": "next build",
-    "start": "next start -p 4001",
+    "start": "next start --hostname 127.0.0.1 -p 4001",
     "lint": "next lint"
   },
   "dependencies": {
+    "@vespaiach/axios-fetch-adapter": "^0.2.2",
+    "axios": "^0.26.1",
     "formik": "^2.2.9",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-loader-spinner": "^6.0.0-0",
     "react-transition-group": "^4.4.2",
     "styled-components": "^5.3.3",
     "uuid": "^8.3.2",

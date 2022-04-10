@@ -2,7 +2,6 @@ import React, { FC, useState, useRef, MouseEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { PostType } from 'blog-app-shared';
 import {
   BackButton,
   BackButtonIcon,
@@ -10,10 +9,11 @@ import {
   Label,
   SubmitButton,
   ValidationError,
-} from 'shared';
+} from 'utils';
 import { useUpdatePost } from 'hooks/useUpdatePost';
 import { useCreatePost } from 'hooks/useCreatePost';
 import { ContentInput, ContentLabel, PostId, SingleInput } from './styles';
+import { PostType } from './types';
 
 export const Post: FC<PostType> = ({ id, name, path, content }) => {
   const router = useRouter();
@@ -80,7 +80,7 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
 
   const onBackClicked = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    router.push('http://localhost:4001');
+    router.push('http://127.0.0.1:4001');
   };
 
   return (

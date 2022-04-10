@@ -1,11 +1,12 @@
-import type { InferGetStaticPropsType, NextPage } from 'next';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
-import { getPosts } from 'blog-app-shared';
 import { PostsList } from 'components/PostsList';
 import { NavCard } from 'components/Nav';
+import { client } from 'utils/client';
+import { InferWithAuthServerSideProps, withAuth } from 'utils/withAuth';
 
-const Home: NextPage<InferGetStaticPropsType<typeof getServerSideProps>> = ({
+const Home: NextPage<InferWithAuthServerSideProps<typeof getServerSideProps>> = ({
   posts,
   error,
 }) => {
@@ -41,13 +42,14 @@ const Wrapper = styled.main`
   overflow: auto;
 `;
 
-export async function getServerSideProps() {
+export const getServerSideProps = withAuth(async () => {
   try {
-    const response = await getPosts();
+    const response = await client.get('/posts');
+    const payload = response.data;
     return {
       props: {
-        posts: response.data,
-        error: response.error,
+        posts: payload.data,
+        error: payload.error,
       },
     };
   } catch (e: any) {
@@ -58,4 +60,4 @@ export async function getServerSideProps() {
       },
     };
   }
-}
+});

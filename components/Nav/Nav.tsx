@@ -2,7 +2,7 @@ import React, { FC, useRef, MouseEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { BackButton, BackButtonIcon, Form, SubmitButton } from 'shared';
+import { BackButton, BackButtonIcon, Form, SubmitButton } from 'utils';
 import { useUpdateNavItems } from 'hooks/useUpdateNavItems';
 import { ContentInput, ContentLabel, ValidationError } from './styles';
 import { NavType } from './types';
@@ -63,7 +63,7 @@ export const Nav: FC<NavType> = ({ navItemsContent }) => {
 
   const onBackClicked = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    router.push('http://localhost:4001');
+    router.push('http://127.0.0.1:4001');
   };
 
   return (

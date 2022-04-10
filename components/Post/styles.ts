@@ -1,4 +1,4 @@
-import { BaseInputStyle, BaseLabel } from 'shared';
+import { BaseInputStyle, BaseLabel } from 'utils';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`

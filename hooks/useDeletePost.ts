@@ -1,7 +1,10 @@
-import { PostBaseType } from 'blog-app-shared';
+import { useRouter } from 'next/router';
 import { InfoStatus, useInfoContext } from 'components/InfoStack';
+import { PostBaseType } from 'components/Post/types';
+import { client } from 'utils/client';
 
 export const useDeletePost = () => {
+  const router = useRouter();
   const { pushInfo } = useInfoContext();
   return async (postItem: PostBaseType, onSuccess: () => void) => {
     pushInfo({
@@ -9,12 +12,11 @@ export const useDeletePost = () => {
       status: InfoStatus.Pending,
     });
     try {
-      const response = await fetch('http://localhost:4001/api/deletePost', {
-        method: 'DELETE',
-        body: JSON.stringify({ postId: postItem.id }),
+      const response = await client.delete(`/posts/${postItem.id}`, {
+        withCredentials: true,
       });
-      if (response.ok) {
-        const responseJson = await response.json();
+      if (response.status === 200) {
+        const responseJson = await response.data;
         const isOk: boolean = responseJson.data;
 
         if (isOk) {
@@ -37,10 +39,14 @@ export const useDeletePost = () => {
         });
       }
     } catch (e: any) {
+      const error = e?.response?.data?.message || e + '';
       pushInfo({
-        text: e + '',
+        text: error,
         status: InfoStatus.Bad,
       });
+      if (e?.response?.status === 401) {
+        router.push('/auth');
+      }
     }
   };
 };

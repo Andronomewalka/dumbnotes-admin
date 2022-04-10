@@ -1,7 +1,10 @@
-import { PostType } from 'blog-app-shared';
 import { InfoStatus, useInfoContext } from 'components/InfoStack';
+import { PostType } from 'components/Post/types';
+import { useRouter } from 'next/router';
+import { client } from 'utils/client';
 
 export const useUpdatePost = () => {
+  const router = useRouter();
   const { pushInfo } = useInfoContext();
   return async (postOldPath: string, postItem: PostType): Promise<boolean> => {
     pushInfo({
@@ -10,18 +13,21 @@ export const useUpdatePost = () => {
     });
 
     try {
-      const response = await fetch('http://localhost:4001/api/updatePost', {
-        method: 'PUT',
-        body: JSON.stringify({ ...postItem }),
-      });
+      const response = await client.put(
+        `/posts/${postItem.id}`,
+        { ...postItem },
+        {
+          withCredentials: true,
+        }
+      );
 
-      if (response.ok) {
-        const responseJson = await response.json();
+      if (response.status === 200) {
+        const responseJson = await response.data;
 
         if (!responseJson.error) {
           // need to revalidate changed item (on its before changed path)
           const revalidateResponse = await fetch(
-            `http://localhost:3000/api/revalidate?secret=${process.env.NEXT_PUBLIC_REVALIDATE_TOKEN}&post=${postOldPath}`
+            `http://127.0.0.1:3000/api/revalidate?secret=${process.env.NEXT_PUBLIC_REVALIDATE_TOKEN}&post=${postOldPath}`
           );
           if (revalidateResponse.ok) {
             const revalidateResponseJson = await revalidateResponse.json();
@@ -58,10 +64,14 @@ export const useUpdatePost = () => {
         });
       }
     } catch (e: any) {
+      const error = e?.response?.data?.message || e + '';
       pushInfo({
-        text: e + '',
+        text: error,
         status: InfoStatus.Bad,
       });
+      if (e?.response?.status === 401) {
+        router.push('../auth');
+      }
     }
     return false;
   };

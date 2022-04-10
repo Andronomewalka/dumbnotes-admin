@@ -1,10 +1,11 @@
-import type { InferGetStaticPropsType, NextPage } from 'next';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
-import { defaultPost, getPost } from 'blog-app-shared';
 import { Post } from 'components/Post';
+import { client } from 'utils/client';
+import { InferWithAuthServerSideProps, withAuth } from 'utils/withAuth';
 
-const PostSlug: NextPage<InferGetStaticPropsType<typeof getServerSideProps>> = ({
+const PostSlug: NextPage<InferWithAuthServerSideProps<typeof getServerSideProps>> = ({
   data,
   error,
 }) => {
@@ -30,14 +31,14 @@ const Wrapper = styled.main`
   overflow: auto;
 `;
 
-export async function getServerSideProps(context: any) {
+export const getServerSideProps = withAuth(async (ctx) => {
   try {
-    if (context.query.postPath === 'new') {
+    if (ctx.query.slug === 'new') {
       return {
         props: {
           data: {
             id: '',
-            name: '',
+            name: 'New Post',
             path: 'new',
             content: '',
           },
@@ -46,19 +47,19 @@ export async function getServerSideProps(context: any) {
       };
     }
 
-    const result = await getPost(context.query.slug);
+    const response = await client.get(`/posts/${ctx.query.slug}`);
+    const payload = response.data;
     return {
       props: {
-        data: result.data,
-        error: result.error,
+        data: payload.data,
+        error: payload.error,
       },
     };
   } catch (e: any) {
     return {
       props: {
-        data: defaultPost,
         error: e + '',
       },
     };
   }
-}
+});

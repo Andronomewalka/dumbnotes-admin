@@ -1,4 +1,4 @@
-import { BaseCardCss, BaseInputStyle, BaseLabel } from 'shared/SharedStyled';
+import { BaseCardCss, BaseInputStyle, BaseLabel } from 'utils/SharedStyled';
 import styled from 'styled-components';
 
 export const NavCardWrapper = styled.div`

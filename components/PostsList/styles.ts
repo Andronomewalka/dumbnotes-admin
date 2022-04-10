@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BaseCardCss } from 'shared/SharedStyled';
+import { BaseCardCss } from 'utils/SharedStyled';
 
 export const PostUlWrapper = styled.ul`
   display: inline-flex;

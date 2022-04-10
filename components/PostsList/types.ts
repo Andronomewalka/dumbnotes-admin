@@ -1,4 +1,4 @@
-import { PostBaseType } from 'blog-app-shared';
+import { PostBaseType } from 'components/Post/types';
 
 export interface PostLiType extends PostBaseType {
   isCreate?: boolean;
