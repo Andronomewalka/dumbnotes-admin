@@ -27,7 +27,7 @@ export const useUpdatePost = () => {
         if (!responseJson.error) {
           // need to revalidate changed item (on its before changed path)
           const revalidateResponse = await client.post(
-            `${process.env.ORIGIN_MAIN}/api/revalidate`,
+            `${process.env.NEXT_PUBLIC_ORIGIN_MAIN}/api/revalidate`,
             {
               secret: process.env.NEXT_PUBLIC_REVALIDATE_TOKEN,
               post: postOldPath,

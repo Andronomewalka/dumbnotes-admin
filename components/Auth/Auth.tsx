@@ -37,7 +37,7 @@ export const Auth: FC = () => {
           const result = await authenticate(values.code);
           if (result) {
             if (Object.keys(router.query).length === 0) {
-              router.push(process.env.ORIGIN_SELF);
+              router.push(process.env.NEXT_PUBLIC_ORIGIN_SELF);
             } else if (typeof router.query.redirect === 'string') {
               router.push(router.query.redirect);
             }

@@ -80,7 +80,7 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
 
   const onBackClicked = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    router.push(process.env.ORIGIN_SELF);
+    router.push(process.env.NEXT_PUBLIC_ORIGIN_SELF);
   };
 
   return (
