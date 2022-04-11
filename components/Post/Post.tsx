@@ -80,7 +80,7 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
 
   const onBackClicked = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    router.push('http://127.0.0.1:4001');
+    router.push(process.env.ORIGIN_SELF);
   };
 
   return (

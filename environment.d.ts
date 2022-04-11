@@ -2,7 +2,9 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       NODE_ENV: 'development' | 'production';
-      SECRET: string;
+      ORIGIN_SELF: string;
+      ORIGIN_API: string;
+      ORIGIN_MAIN: string;
       NEXT_PUBLIC_REVALIDATE_TOKEN: string;
     }
   }

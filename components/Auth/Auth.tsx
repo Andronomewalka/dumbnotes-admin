@@ -37,7 +37,7 @@ export const Auth: FC = () => {
           const result = await authenticate(values.code);
           if (result) {
             if (Object.keys(router.query).length === 0) {
-              router.push('http://127.0.0.1:4001');
+              router.push(process.env.ORIGIN_SELF);
             } else if (typeof router.query.redirect === 'string') {
               router.push(router.query.redirect);
             }

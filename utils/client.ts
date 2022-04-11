@@ -1,15 +1,11 @@
 import axios from 'axios';
 
 export const client = axios.create({
-  baseURL: 'http://127.0.0.1:8080',
+  baseURL: process.env.ORIGIN_API,
   headers: {
     'Content-Type': 'application/json',
   },
 });
-
-export const isCSRFTokenPresent = () => {
-  return !!client.defaults.headers.post['X-CSRF-Token'];
-};
 
 export const attachCSRFToken = (xsrfToken: string) => {
   client.defaults.headers.post['X-CSRF-Token'] = xsrfToken;

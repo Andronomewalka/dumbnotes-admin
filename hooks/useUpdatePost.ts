@@ -26,11 +26,15 @@ export const useUpdatePost = () => {
 
         if (!responseJson.error) {
           // need to revalidate changed item (on its before changed path)
-          const revalidateResponse = await fetch(
-            `http://127.0.0.1:3000/api/revalidate?secret=${process.env.NEXT_PUBLIC_REVALIDATE_TOKEN}&post=${postOldPath}`
+          const revalidateResponse = await client.post(
+            `${process.env.ORIGIN_MAIN}/api/revalidate`,
+            {
+              secret: process.env.NEXT_PUBLIC_REVALIDATE_TOKEN,
+              post: postOldPath,
+            }
           );
-          if (revalidateResponse.ok) {
-            const revalidateResponseJson = await revalidateResponse.json();
+          if (revalidateResponse.status === 200) {
+            const revalidateResponseJson = await revalidateResponse.data;
             if (!revalidateResponseJson.success) {
               pushInfo({
                 text: `Updated ${postItem.name}, but revalidation failed with "${revalidateResponseJson.message}"`,
