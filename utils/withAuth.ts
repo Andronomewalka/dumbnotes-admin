@@ -24,15 +24,15 @@ export const withAuth = <T extends EmptyProps = EmptyProps>(
   return async function getMergedServerSideProps(
     ctx: GetServerSidePropsContext
   ): Promise<{ props: T['props'] }> {
-    let reqCookies = Object.keys(ctx.req.cookies)
-      .map((key) => `${key}=${ctx.req.cookies[key]}`)
-      .join('; ');
-
     // pass frontend cookies to api,
     // if tokens are okay, do notihing,
     // otherwise set new cookies to frontend (if refresh token is valid),
     // if it's impossible to refresh tokens redirect to auth
     try {
+      let reqCookies = Object.keys(ctx.req.cookies)
+        .map((key) => `${key}=${ctx.req.cookies[key]}`)
+        .join('; ');
+
       const verifyReponse = await client.get('/auth/verify-tokens', {
         withCredentials: true,
         headers: {
