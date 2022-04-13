@@ -34,7 +34,7 @@ export const Nav: FC<NavType> = ({ navItemsContent }) => {
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
       (async () => {
-        await updateNavItems(values.content);
+        await updateNavItems(JSON.parse(values.content));
         setSubmitting(false);
       })();
     },

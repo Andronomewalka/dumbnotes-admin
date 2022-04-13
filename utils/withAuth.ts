@@ -61,7 +61,7 @@ export const withAuth = <T extends EmptyProps = EmptyProps>(
           destination += `?redirect=${url.substring(
             url.indexOf('slug') + 'slug'.length
           )}`;
-        } else if (url !== '/') {
+        } else if (url !== '/' && !url.includes('_next/data')) {
           destination += `?redirect=${url}`;
         }
       }

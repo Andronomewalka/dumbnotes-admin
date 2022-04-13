@@ -33,7 +33,7 @@ export const ContentLabel = styled.label`
 export const ContentInput = styled.textarea`
   ${BaseInputStyle};
   height: 100%;
-  padding-top: 8px;
+  padding: 20px;
   tab-size: 2;
   resize: none;
 `;
