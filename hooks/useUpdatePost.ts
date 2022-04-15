@@ -2,10 +2,12 @@ import { InfoStatus, useInfoContext } from 'components/InfoStack';
 import { PostType } from 'components/Post/types';
 import { useRouter } from 'next/router';
 import { client } from 'utils/client';
+import { useRevalidate } from './useRevalidate';
 
 export const useUpdatePost = () => {
   const router = useRouter();
   const { pushInfo } = useInfoContext();
+  const revalidate = useRevalidate();
   return async (postOldPath: string, postItem: PostType): Promise<boolean> => {
     pushInfo({
       text: `Updating ${postItem.name}`,
@@ -23,38 +25,17 @@ export const useUpdatePost = () => {
 
       if (response.status === 200) {
         const responseJson = await response.data;
-
         if (!responseJson.error) {
-          // need to revalidate changed item (on its before changed path)
-          const revalidateResponse = await client.post(
-            `${process.env.NEXT_PUBLIC_ORIGIN_MAIN}/api/revalidate`,
-            {
-              secret: process.env.NEXT_PUBLIC_REVALIDATE_TOKEN,
-              post: postOldPath,
-            }
-          );
-          if (revalidateResponse.status === 200) {
-            const revalidateResponseJson = await revalidateResponse.data;
-            if (!revalidateResponseJson.success) {
-              pushInfo({
-                text: `Updated ${postItem.name}, but revalidation failed with "${revalidateResponseJson.message}"`,
-                status: InfoStatus.Pending,
-              });
-              return false;
-            }
-          } else {
+          // revalidate old and new pathes (if some of theme was or become 404)
+          const revalidateOldResult = await revalidate(postItem.name, postOldPath);
+          const revalidateNewTesult = await revalidate(postItem.name, postItem.path);
+          if (revalidateOldResult && revalidateNewTesult) {
             pushInfo({
-              text: `Updated ${postItem.name}, but revalidation failed with "${revalidateResponse.statusText}"`,
-              status: InfoStatus.Pending,
+              text: `Updated ${postItem.name}`,
+              status: InfoStatus.Good,
             });
-            return false;
           }
-
-          pushInfo({
-            text: `Updated ${postItem.name}`,
-            status: InfoStatus.Good,
-          });
-          return true;
+          return revalidateOldResult && revalidateNewTesult;
         } else {
           pushInfo({
             text: responseJson.error,

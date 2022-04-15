@@ -2,10 +2,12 @@ import { useRouter } from 'next/router';
 import { InfoStatus, useInfoContext } from 'components/InfoStack';
 import { PostType } from 'components/Post/types';
 import { client } from 'utils/client';
+import { useRevalidate } from './useRevalidate';
 
 export const useCreatePost = () => {
   const router = useRouter();
   const { pushInfo } = useInfoContext();
+  const revalidate = useRevalidate();
   return async (postItem: Omit<PostType, 'id'>): Promise<string> => {
     pushInfo({
       text: `Creating ${postItem.name}`,
@@ -25,10 +27,14 @@ export const useCreatePost = () => {
         const responseJson = response.data;
 
         if (!responseJson.error) {
-          pushInfo({
-            text: `Created ${postItem.name}`,
-            status: InfoStatus.Good,
-          });
+          // revalidate new pathes (if it was already 404)
+          const revalidateNewTesult = await revalidate(postItem.name, postItem.path);
+          if (revalidateNewTesult) {
+            pushInfo({
+              text: `Created ${postItem.name}`,
+              status: InfoStatus.Good,
+            });
+          }
         } else {
           pushInfo({
             text: responseJson.error,
