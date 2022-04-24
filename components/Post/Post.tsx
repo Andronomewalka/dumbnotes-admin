@@ -39,21 +39,31 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
       (async () => {
-        if (router.asPath === '/new') {
-          const newPostId = await createPost({ ...values });
-          if (newPostId) {
-            setPostId(newPostId);
-            oldPath.current = values.path;
-            router.push(`${values.path}`, undefined, { shallow: true });
+        let isRouteChanged = false;
+        const onRouteChanged = () => {
+          isRouteChanged = true;
+        };
+        try {
+          router.events.on('routeChangeComplete', onRouteChanged);
+
+          if (router.asPath === '/new') {
+            const newPostId = await createPost({ ...values });
+            if (newPostId && !isRouteChanged) {
+              setPostId(newPostId);
+              oldPath.current = values.path;
+              router.push(`${values.path}`, undefined, { shallow: true });
+            }
+          } else {
+            const res = await updatePost(oldPath.current, { id: postId, ...values });
+            if (res && !isRouteChanged) {
+              oldPath.current = values.path;
+              router.push(`${values.path}`, undefined, { shallow: true });
+            }
           }
-        } else {
-          const res = await updatePost(oldPath.current, { id: postId, ...values });
-          if (res) {
-            oldPath.current = values.path;
-            router.push(`${values.path}`, undefined, { shallow: true });
-          }
+          setSubmitting(false);
+        } finally {
+          router.events.off('routeChangeComplete', onRouteChanged);
         }
-        setSubmitting(false);
       })();
     },
   });
