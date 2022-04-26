@@ -34,7 +34,6 @@ export const withAuth = <T extends EmptyProps = EmptyProps>(
         .join('; ');
 
       const verifyReponse = await client.get('/auth/verify-tokens', {
-        withCredentials: true,
         headers: {
           Cookie: reqCookies,
         },
