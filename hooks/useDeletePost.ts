@@ -2,10 +2,12 @@ import { useRouter } from 'next/router';
 import { InfoStatus, useInfoContext } from 'components/InfoStack';
 import { PostBaseType } from 'components/Post/types';
 import { client } from 'utils/client';
+import { useRevalidate } from './useRevalidate';
 
 export const useDeletePost = () => {
   const router = useRouter();
   const { pushInfo } = useInfoContext();
+  const revalidate = useRevalidate();
   return async (postItem: PostBaseType, onSuccess: () => void) => {
     pushInfo({
       text: `Deleting ${postItem.name}`,
@@ -17,7 +19,8 @@ export const useDeletePost = () => {
       });
       if (response.status === 200) {
         const responseJson = await response.data;
-        const isOk: boolean = responseJson.data;
+        const revalidateRemovedResult = await revalidate(postItem.name, postItem.path);
+        const isOk: boolean = responseJson.data && revalidateRemovedResult;
 
         if (isOk) {
           onSuccess();

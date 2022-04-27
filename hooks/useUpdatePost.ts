@@ -27,18 +27,18 @@ export const useUpdatePost = () => {
         const responseJson = await response.data;
         if (!responseJson.error) {
           // revalidate old and new pathes (if some of theme was or become 404)
-          const revalidateNewTesult = await revalidate(postItem.name, postItem.path);
+          const revalidateNewResult = await revalidate(postItem.name, postItem.path);
           const revalidateOldResult =
             postItem.path === postOldPath ||
             (await revalidate(postItem.name, postOldPath)); // if path haven't changed, don't revalidate same path twice
 
-          if (revalidateOldResult && revalidateNewTesult) {
+          if (revalidateOldResult && revalidateNewResult) {
             pushInfo({
               text: `Updated ${postItem.name}`,
               status: InfoStatus.Good,
             });
           }
-          return revalidateOldResult && revalidateNewTesult;
+          return revalidateOldResult && revalidateNewResult;
         } else {
           pushInfo({
             text: responseJson.error,

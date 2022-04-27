@@ -1,10 +1,7 @@
 import { InfoStatus, useInfoContext } from 'components/InfoStack';
-import { PostType } from 'components/Post/types';
-import { useRouter } from 'next/router';
 import { client } from 'utils/client';
 
 export const useRevalidate = () => {
-  const router = useRouter();
   const { pushInfo } = useInfoContext();
   return async (name: string, path: string): Promise<boolean> => {
     try {
