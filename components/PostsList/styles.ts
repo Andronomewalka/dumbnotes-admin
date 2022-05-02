@@ -23,6 +23,7 @@ export const PostLiA = styled.a`
   align-items: center;
   width: 100%;
   height: 100%;
+  text-align: center;
 `;
 
 export const PostLiDeleteButton = styled.button`
