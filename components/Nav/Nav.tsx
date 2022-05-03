@@ -1,14 +1,13 @@
-import React, { FC, useRef, MouseEvent } from 'react';
-import { useRouter } from 'next/router';
+import React, { FC, useRef } from 'react';
+import Link from 'next/link';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { BackButton, BackButtonIcon, Form, SubmitButton } from 'utils';
+import { BackA, BackIcon, Form, SubmitButton } from 'utils';
 import { useUpdateNavItems } from 'hooks/useUpdateNavItems';
 import { ContentInput, ContentLabel, ValidationError } from './styles';
 import { NavType } from './types';
 
 export const Nav: FC<NavType> = ({ navItemsContent }) => {
-  const router = useRouter();
   const updateNavItems = useUpdateNavItems();
 
   const validationScema = Yup.object().shape({
@@ -61,17 +60,14 @@ export const Nav: FC<NavType> = ({ navItemsContent }) => {
     }
   };
 
-  const onBackClicked = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    router.push(process.env.NEXT_PUBLIC_ORIGIN_SELF);
-  };
-
   return (
     <Form onSubmit={formik.handleSubmit}>
-      <BackButton onClick={onBackClicked}>
-        <BackButtonIcon />
-        Back
-      </BackButton>
+      <Link href={process.env.NEXT_PUBLIC_ORIGIN_SELF + '/'} passHref={true}>
+        <BackA>
+          <BackIcon />
+          Back
+        </BackA>
+      </Link>
       <ContentLabel>
         Navigation schema
         <ContentInput

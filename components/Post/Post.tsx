@@ -1,15 +1,9 @@
-import React, { FC, useState, useRef, MouseEvent } from 'react';
+import React, { FC, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import {
-  BackButton,
-  BackButtonIcon,
-  Form,
-  Label,
-  SubmitButton,
-  ValidationError,
-} from 'utils';
+import { BackA, BackIcon, Form, Label, SubmitButton, ValidationError } from 'utils';
 import { useUpdatePost } from 'hooks/useUpdatePost';
 import { useCreatePost } from 'hooks/useCreatePost';
 import { ContentInput, ContentLabel, PostId, SingleInput } from './styles';
@@ -88,17 +82,14 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
     }
   };
 
-  const onBackClicked = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    router.push(process.env.NEXT_PUBLIC_ORIGIN_SELF);
-  };
-
   return (
     <Form onSubmit={formik.handleSubmit}>
-      <BackButton onClick={onBackClicked}>
-        <BackButtonIcon />
-        Back
-      </BackButton>
+      <Link href={process.env.NEXT_PUBLIC_ORIGIN_SELF + '/'} passHref={true}>
+        <BackA>
+          <BackIcon />
+          Back
+        </BackA>
+      </Link>
       <PostId>{postId}</PostId>
       <Label>
         Post name

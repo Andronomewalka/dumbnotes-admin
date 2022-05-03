@@ -1,4 +1,4 @@
-export const BackButtonIcon = () => (
+export const BackIcon = () => (
   <svg
     version='1.1'
     id='Capa_1'

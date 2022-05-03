@@ -81,7 +81,7 @@ export const SubmitButton = styled.input`
   }
 `;
 
-export const BackButton = styled.button`
+export const BackA = styled.a`
   width: 100%;
   display: flex;
   justify-content: start;
@@ -93,6 +93,7 @@ export const BackButton = styled.button`
   color: #d5d5d5;
   background: transparent;
   margin-bottom: 20px;
+  cursor: pointer;
   transition: all 0.3s ease;
 
   svg {
