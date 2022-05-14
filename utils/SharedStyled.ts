@@ -7,6 +7,7 @@ export const BaseCardCss = css`
   align-items: center;
   width: 180px;
   height: 230px;
+  padding: 10px;
   background: white;
   border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;

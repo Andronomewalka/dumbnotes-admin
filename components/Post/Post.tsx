@@ -39,21 +39,27 @@ export const Post: FC<PostType> = ({ id, name, path, content }) => {
         };
         try {
           router.events.on('routeChangeComplete', onRouteChanged);
+          let successFetch = false;
 
           if (router.asPath === '/new') {
             const newPostId = await createPost({ ...values });
             if (newPostId && !isRouteChanged) {
               setPostId(newPostId);
-              oldPath.current = values.path;
-              router.push(`${values.path}`, undefined, { shallow: true });
+              successFetch = true;
             }
           } else {
             const res = await updatePost(oldPath.current, { id: postId, ...values });
             if (res && !isRouteChanged) {
-              oldPath.current = values.path;
-              router.push(`${values.path}`, undefined, { shallow: true });
+              successFetch = true;
             }
           }
+
+          if (successFetch) {
+            oldPath.current = values.path;
+            await router.push(`${values.path}`, undefined, { shallow: true });
+            document.title = values.name;
+          }
+
           setSubmitting(false);
         } finally {
           router.events.off('routeChangeComplete', onRouteChanged);
