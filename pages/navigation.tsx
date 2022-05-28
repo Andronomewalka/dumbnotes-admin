@@ -12,7 +12,7 @@ const NavigationPage: NextPage<
     <>
       <Head>
         <title>Admin Panel</title>
-        <meta name='description' content='andrew-dev-blod admin panel' />
+        <meta name='description' content='dumbnotes admin panel' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
 

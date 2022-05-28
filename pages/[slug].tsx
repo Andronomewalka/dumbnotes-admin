@@ -13,7 +13,7 @@ const PostSlug: NextPage<InferWithAuthServerSideProps<typeof getServerSideProps>
     <>
       <Head>
         <title>{data.name}</title>
-        <meta name='description' content='andrew-dev-blod admin panel' />
+        <meta name='description' content='dumbnotes admin panel' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Wrapper>{!!error ? error : <Post {...data} />}</Wrapper>
